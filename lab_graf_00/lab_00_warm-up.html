@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Lab 1: Rozgrzewka | algograf</title>
+<meta name="generator" content="Jekyll v3.9.0">
+<meta property="og:title" content="Lab 1: Rozgrzewka">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Laboratorium z przedmiotu Algorytmy Grafowe">
+<meta property="og:description" content="Laboratorium z przedmiotu Algorytmy Grafowe">
+<link rel="canonical" href="https://faliszew.github.io/algograf/lab1.html">
+<meta property="og:url" content="https://faliszew.github.io/algograf/lab1.html">
+<meta property="og:site_name" content="algograf">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Lab 1: Rozgrzewka">
+<script type="application/ld+json">
+{"description":"Laboratorium z przedmiotu Algorytmy Grafowe","url":"https://faliszew.github.io/algograf/lab1.html","@type":"WebPage","headline":"Lab 1: Rozgrzewka","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <style class="anchorjs"></style><link rel="stylesheet" href="lab_00_warm-up_files/style.css">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/algograf/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://faliszew.github.io/algograf/">algograf</a></h1>
+      
+
+      <h1 id="lab-1-rozgrzewka">Lab 1: Rozgrzewka</h1>
+
+<h3 id="spis-treści">Spis treści<a class="anchorjs-link " href="#spis-treści" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<ol>
+  <li><a href="#zadanie">Zadanie</a></li>
+  <li><a href="#wczytywanie-grafw">Wczytywanie przykładowych grafów z pliku</a></li>
+  <li><a href="#podstawy-pythona---pomocne-fragmenty-kodu">Podstawy Pythona</a></li>
+  <li><a href="#wskazwki-implementacyjne">Wskazówki implementacyjne</a></li>
+</ol>
+
+<p>W ramach laboratorium należy zaimplementować program (lub kilka jego wariantów) 
+rozwiązujący zadanie “przewodnik turystyczny”.</p>
+
+<h2 id="zadanie">Zadanie<a class="anchorjs-link " href="#zadanie" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Dany jest graf nieskierowany <em>G = (V,E)</em>, funkcja <em>c: E -&gt; N</em> dająca
+wagi krawędziom, oraz wyróżnione wierzchołki <em>s</em> i <em>t</em>. <br>
+Szukamy scieżki z <em>s</em> do <em>t</em>  takiej, że najmniejsza waga krawędzi na tej ścieżce
+jest jak największa.<br>
+Należy zwrócić najmniejszą wagę krawędzi na znalezionej ścieżce.<br>
+(W praktyce ścieżki szukamy tylko koncepcyjnie.)</p>
+
+<p>Podejścia algorytmiczne:</p>
+<ol>
+  <li>wykorzystanie struktury find-union,</li>
+  <li>wyszukiwanie binarne + przegląd grafu metodami BFS/DFS,</li>
+  <li>algorytm a’la Dijkstra.</li>
+</ol>
+
+<p>W ramach laboratorium należy zaimplementować jeden, 
+dowolny z tych algorytmów (a jeśli zostanie czas, to także kolejne).</p>
+
+<h3 id="proponowana-kolejność-prac">Proponowana kolejność prac<a class="anchorjs-link " href="#proponowana-kolejność-prac" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>W ramach laboratorium proponujemy realizować zadanie w następujących krokach.</p>
+<ol>
+  <li>Napisz skrypt wczytujący przykładowy graf i wypisujący krawędzie.
+    <ol>
+      <li><a href="https://faliszew.github.io/algograf/graphs.zip">graphs.zip</a> – grafy testowe</li>
+      <li><a href="https://faliszew.github.io/algograf/dimacs.py">dimacs.py</a> – funkcja wczytująca grafy</li>
+      <li>Więcej o wczytywaniu grafów znajdziesz w <a href="#wczytywanie-grafw">tej sekcji</a>.</li>
+      <li><strong>UWAGA</strong>: Przyjmujemy, że w grafach testowych 
+wierzchołek <em>s</em> ma numer 1 a wierzchołek <em>t</em> ma numer 2.</li>
+    </ol>
+  </li>
+  <li>Rozwiązanie oparte of find-union.
+    <ol>
+      <li>Zaimplementuj funkcje <code class="language-plaintext highlighter-rouge">find</code> i <code class="language-plaintext highlighter-rouge">union</code> realizujące zbiory rozłączne 
+(przetestuj je, np. z poziomu konsoli).</li>
+      <li>Zaimplementuj sortowanie krawędzi grafu malejąco.</li>
+      <li>Użyj powyższych do zaimplementowania całego rozwiązania.</li>
+    </ol>
+  </li>
+  <li>Rozwiąznie oparte o wyszukiwanie binarne + BFS/DFS.
+    <ol>
+      <li>Zaimplementuj konwersję grafu na listy (lub zbiory) sąsiedztwa.
+        <ol>
+          <li>W plikach wejściowych wierzchołki są indeksowane od 1 ale dla wygody
+rozważ konwersję na indeskowanie od 0.</li>
+        </ol>
+      </li>
+      <li>Zaimplementuj algorytm DFS operujący na listach sąsiedztwa.</li>
+      <li>Zaadoptuje DFS na potrzeby rozwiązania opartego o wyszukiwanie binarne.
+        <ol>
+          <li>Albo możesz za każdym razem tworzyć graf wejściowy do DFS-a tak, 
+żeby posiadał tylko odpowiednie krawędzie.</li>
+          <li>Albo możesz zmodyfikować DFS tak, żeby sam wybierał jedynie odpowiednie krawędzie.</li>
+        </ol>
+      </li>
+      <li>Zrealizuj wyszukiwanie binarne które powinno dać całe rozwiązanie.</li>
+      <li>(Opcjonalnie) Zamień DFS na BFS.</li>
+    </ol>
+  </li>
+  <li>Zrealizuj rozwiązanie oparte o algorytm Dijkstry.
+    <ol>
+      <li>Zaimplementuj całe rozwiązanie.</li>
+    </ol>
+  </li>
+</ol>
+
+<hr>
+
+<h2 id="wczytywanie-grafów">Wczytywanie grafów<a class="anchorjs-link " href="#wczytywanie-grafów" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Grafy są zapisane w formacie DIMACS ascii (+ modyfikacje pozwalające zapisywać wagi).</p>
+
+<ul>
+  <li>Plik zaczyna się od 0 lub więcej linii zaczynających się od znaku <code class="language-plaintext highlighter-rouge">c</code> 
+i odstępu.<br>
+Są to komentarze, w których można umieścić dodatkowe informacje o grafie.</li>
+  <li>Następnie występuje linia postaci <code class="language-plaintext highlighter-rouge">p edge V E</code> gdzie:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">V</code> to liczba wierzchołków w grafie,</li>
+      <li><code class="language-plaintext highlighter-rouge">E</code> to liczba krawędzi.</li>
+    </ul>
+  </li>
+  <li>Następnie występuje <code class="language-plaintext highlighter-rouge">E</code> linii postaci <code class="language-plaintext highlighter-rouge">e X Y C</code> oznaczających krawędź nieskierowaną
+    <ul>
+      <li>między wierzchołkami o numerach <code class="language-plaintext highlighter-rouge">X</code> i <code class="language-plaintext highlighter-rouge">Y</code></li>
+      <li>i o wadze <code class="language-plaintext highlighter-rouge">C</code>.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">dimacs.py</code> dostarcza funkcję <code class="language-plaintext highlighter-rouge">loadWeightedGraph(name)</code>, która wczytuje graf w formacie DIMACS ascii 
+i zwraca parę postaci <code class="language-plaintext highlighter-rouge">(V,L)</code>, gdzie:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">V</code> to liczba wierzchołków (numerowane od <code class="language-plaintext highlighter-rouge">1</code> do <code class="language-plaintext highlighter-rouge">V</code>),</li>
+  <li><code class="language-plaintext highlighter-rouge">L</code> to lista krawędzi w postaci trójek postaci <code class="language-plaintext highlighter-rouge">(X,Y,C)</code>.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="n">V</span><span class="p">:</span> <span class="nb">int</span> <span class="c1"># Liczba wierzchołków
+</span><span class="n">L</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="c1"># List krawędzi
+</span><span class="n">V</span><span class="p">,</span> <span class="n">L</span> <span class="o">=</span> <span class="n">loadWeightedGraph</span><span class="p">(</span><span class="s">"g1"</span><span class="p">)</span> <span class="c1"># Wczytanie grafu z pliku "g1"
+</span></code></pre></div></div>
+
+<h3 id="przykład">Przykład:<a class="anchorjs-link " href="#przykład" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<p>Poniższy kod wypisuje jakie krawędzie występują w grafie <code class="language-plaintext highlighter-rouge">g1</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">dimacs</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="p">(</span><span class="n">V</span><span class="p">,</span><span class="n">L</span><span class="p">)</span> <span class="o">=</span> <span class="n">loadWeightedGraph</span><span class="p">(</span> <span class="s">"g1"</span> <span class="p">)</span>        <span class="c1"># wczytaj graf
+</span><span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>                        <span class="c1"># przeglądaj krawędzie z listy
+</span>  <span class="k">print</span><span class="p">(</span> <span class="s">"krawedz miedzy"</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s">"i"</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span><span class="s">"o wadze"</span><span class="p">,</span> <span class="n">c</span> <span class="p">)</span>   <span class="c1"># wypisuj
+</span></code></pre></div></div>
+
+<hr>
+
+<h2 id="podstawy-pythona---pomocne-fragmenty-kodu">Podstawy Pythona - pomocne fragmenty kodu<a class="anchorjs-link " href="#podstawy-pythona---pomocne-fragmenty-kodu" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Poniżej przedstawione są przydatne fragmenty kodu w Pythonie realizujące typowe zadania.</p>
+
+<h3 id="stworzenie-tablicy-listy-o-zadanym-rozmiarze-odczytanie-rozmiaru">Stworzenie tablicy (listy) o zadanym rozmiarze, odczytanie rozmiaru<a class="anchorjs-link " href="#stworzenie-tablicy-listy-o-zadanym-rozmiarze-odczytanie-rozmiaru" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">T</span> <span class="o">=</span> <span class="p">[</span> <span class="bp">None</span> <span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>   <span class="c1"># Tworzy listę o 10 obiektach "None"
+</span><span class="n">A</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>     <span class="c1"># Tworzy listę wypełnioną setką zer
+</span><span class="n">B</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>       <span class="c1"># Tworzy listę [0,1,2, ... 9]
+</span>
+<span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>          <span class="c1"># odczytanie długości listy
+</span></code></pre></div></div>
+<p>Listy są indeksowane od 0.</p>
+
+<h3 id="stworzenie-funkcji">Stworzenie funkcji<a class="anchorjs-link " href="#stworzenie-funkcji" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">)</span><span class="o">+</span><span class="n">z</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">function</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="pętle-i-instrukcje-warunkowe">Pętle i instrukcje warunkowe<a class="anchorjs-link " href="#pętle-i-instrukcje-warunkowe" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>    <span class="c1"># wykonuj dopóki i &lt; 10
+</span>  <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+  <span class="n">i</span> <span class="o">*=</span> <span class="mi">2</span>
+  <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">"Woo!"</span> <span class="p">)</span>
+  <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Ho ho ho!"</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Boooring!"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span> <span class="c1"># odpowiednik typowej konstrukcji pętli for( int i = 0; i &lt; 10; i++ ) z C/C++
+</span>  <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="c1"># można interować też po bardziej zawiłych listach (i innych obiektach takich jak zbiory)
+</span><span class="n">L</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="posortowanie-tablicy">Posortowanie tablicy<a class="anchorjs-link " href="#posortowanie-tablicy" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>       <span class="c1"># przykładowa tablica
+</span><span class="n">B</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>       <span class="c1"># stwórz posortowaną KOPIĘ tablicy A
+</span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>            <span class="c1"># wypisze [3,1,2]
+</span><span class="k">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>            <span class="c1"># wypisze [1,2,3]
+</span>
+<span class="n">A</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span>            <span class="c1"># posortuj tablicę A
+</span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>            <span class="c1"># wypisze [1,2,3]
+</span>
+<span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>     <span class="c1"># Tworzy tablicę o 10 obiektach "None"
+</span><span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>       <span class="c1"># Tworzy tablicę wypełnioną 100 zer
+</span>
+<span class="c1"># sortowanie po elemencie tuple
+</span><span class="n">A</span> <span class="o">=</span> <span class="p">[(</span><span class="s">"ma"</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">"kota"</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">"Ala"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+
+<span class="k">def</span> <span class="nf">second</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>      <span class="c1"># stwórz funkcję wybierającą element, po którym następuje sortowanie
+</span>
+<span class="n">A</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">second</span><span class="p">)</span>              <span class="c1"># posortuj używając funkcji second do wyliczenia klucza
+</span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>                        <span class="c1"># wypisz wynik
+</span>
+<span class="c1"># j.w. używając funkcji anonimowych (lambda)
+</span><span class="n">A</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>      <span class="c1"># lambda to słowo kluczowe rozpoczynające
+</span>                                <span class="c1"># funkcję anonimową ( lambda argumenty : zwracana wartość )
+</span></code></pre></div></div>
+
+<h3 id="list-comprehensions">List comprehensions<a class="anchorjs-link " href="#list-comprehensions" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>Tworzenie list można sobie uprościć stosując zapisz zbliżony do matematycznego</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>    <span class="c1"># tworzy listę [0,1,4,9,16]
+</span><span class="n">B</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">V</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span> <span class="c1"># tworzy listę par [(0,0), (1,0), (2,0), ... ] zawierającą V+1 elementów
+</span></code></pre></div></div>
+
+<h3 id="stworzenie-zbioru-elementów">Stworzenie zbioru elementów<a class="anchorjs-link " href="#stworzenie-zbioru-elementów" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>                       <span class="c1"># pusty zbiór
+</span><span class="n">X</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>                        <span class="c1"># dodaj 1 do zbioru
+</span><span class="n">Y</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>                <span class="c1"># stwórz zbiór z elementów listy
+</span><span class="n">Y</span> <span class="o">=</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}</span>                   <span class="c1"># stwórz zbiór bezpośrednio z elementów
+</span>
+<span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">Y</span><span class="p">:</span> 
+  <span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>                      <span class="c1"># wypisz elementy zbioru
+</span>
+<span class="k">if</span> <span class="mi">2</span> <span class="ow">in</span> <span class="n">Y</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"liczba 2 jest w zbiorze Y"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="wskazówki-implementacyjne">Wskazówki implementacyjne<a class="anchorjs-link " href="#wskazówki-implementacyjne" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<h3 id="listyzbiory-sąsiedztwa">Listy/zbiory sąsiedztwa<a class="anchorjs-link " href="#listyzbiory-sąsiedztwa" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<h4 id="stworzenie-reprezentacji-grafu-przez-zbiory-sąsiedztwa">Stworzenie reprezentacji grafu przez zbiory sąsiedztwa<a class="anchorjs-link " href="#stworzenie-reprezentacji-grafu-przez-zbiory-sąsiedztwa" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<p>Możemy reprezentować graf jako listę indeksowaną numerami wierzchołków, 
+której elementami są zbiory krawędzi wychodzących z danego wierzchołka.
+Razem z wierzchołkiem przechowujemy wagę powiązanej krawędzi jako krotkę <code class="language-plaintext highlighter-rouge">(v, c)</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">V</span><span class="p">,</span> <span class="n">L</span> <span class="o">=</span> <span class="n">loadWeightedGraph</span><span class="p">(...)</span> 
+<span class="n">G</span> <span class="o">=</span> <span class="p">[</span><span class="nb">set</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">V</span><span class="p">)]</span>   <span class="c1"># tworzymy po jednym pustym zbiorze na wierzchołek
+</span>
+<span class="c1"># # wersja prostsza koncepcyjnie, ale nieidiomatyczna w Pythonie
+# G = [None]*(V+1)
+# for i in range(V+1):
+#  G[i] = set()
+</span>
+<span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span> 
+  <span class="n">u</span> <span class="o">-=</span> <span class="mi">1</span>                 <span class="c1"># zmiana numerowania wierzchołków z "od 1" na "od 0"
+</span>  <span class="n">v</span> <span class="o">-=</span> <span class="mi">1</span>
+  <span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">add</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>       <span class="c1"># dodaj krawędź z u do v
+</span>  <span class="n">G</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">add</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>       <span class="c1"># dodaj krawędź z v do u
+</span></code></pre></div></div>
+
+<h4 id="stworzenie-reprezentacji-grafu-przez-listy-sąsiedztwa">Stworzenie reprezentacji grafu przez listy sąsiedztwa<a class="anchorjs-link " href="#stworzenie-reprezentacji-grafu-przez-listy-sąsiedztwa" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">G</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">V</span><span class="p">)]</span>     <span class="c1"># tworzymy po jednej pustej liście na wierzchołek
+</span>
+<span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span> 
+  <span class="n">u</span> <span class="o">-=</span> <span class="mi">1</span>                         <span class="c1"># zmiana numerowania wierzchołków z "od 1" na "od 0"
+</span>  <span class="n">v</span> <span class="o">-=</span> <span class="mi">1</span>
+  <span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>            <span class="c1"># dodaj krawędź z x do y
+</span>  <span class="n">G</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>            <span class="c1"># dodaj krawędź z y do x
+</span></code></pre></div></div>
+
+<h4 id="wypisanie-grafu">Wypisanie grafu<a class="anchorjs-link " href="#wypisanie-grafu" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">V</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>   <span class="c1"># przeglądamy tylko prawdziwe wierzchołki, od 1 do V
+</span>  <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s">"</span><span class="si">{</span><span class="n">u</span><span class="si">}</span><span class="s">: "</span>
+  <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s">"</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s">, "</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="dfsbfs">DFS/BFS<a class="anchorjs-link " href="#dfsbfs" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>Na nasze potrzeby możemy założyć, że DFS i BFS
+zwrócą wartość typu <code class="language-plaintext highlighter-rouge">bool</code> sygnalizującą czy istnieje
+ścieżka od wierzchołka źródłowego do docelowego.</p>
+
+<h4 id="implementacja-dfs">Implementacja DFS<a class="anchorjs-link " href="#implementacja-dfs" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<p>Algorytm DFS można zaimplementować w naturalny rekurencyjny sposób.<br>
+Należy jednak pamiętać o tym, że trzeba śledzić, które wierzchołki zostały odwiedzone. <br>
+W tym celu można sobie stworzyć np. listę <code class="language-plaintext highlighter-rouge">visited</code>, która jest przenoszona 
+przez kolejne wywołania rekurencyjne.<br>
+UWAGA: Możliwe, że przekroczymy limit rekurencji w Pythonie. 
+Wtedy można go zmodyfikować korzystając z <code class="language-plaintext highlighter-rouge">sys.setrecursionlimit(new_limit)</code>
+albo zaimplementować DFSa iteracyjnie (z własnym stosem).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">DFS</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="p">...):</span>     <span class="c1"># DFS w grafie G z wierzchołka s
+</span>  <span class="n">V</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>            <span class="c1"># liczba wierzchołków w grafie (zakładając powyższą implementację)
+</span>  <span class="n">visited</span> <span class="o">=</span> <span class="p">[</span><span class="bp">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">V</span>
+  <span class="p">...</span>
+  <span class="n">DFSVisit</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">visited</span><span class="p">,</span> <span class="p">...)</span>
+
+
+<span class="k">def</span> <span class="nf">DFSVisit</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">visited</span><span class="p">,</span> <span class="p">...):</span>  <span class="c1"># rekurencyjna funkcja realizująca DFS
+</span>  <span class="n">visited</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+  <span class="p">...</span> 
+  <span class="c1"># przeglądaj wierzchołki osiągalne z s
+</span>  <span class="c1"># przed wejściem do danego wierzchołka sprawdź, czy jego pole visited jest True
+</span></code></pre></div></div>
+
+<h4 id="implementacja-bfs">Implementacja BFS<a class="anchorjs-link " href="#implementacja-bfs" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<p>W tym zadaniu korzystanie z BFS nie jest konieczne, ale jeśli ktoś chce, to może
+przydać się kolejka.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>   <span class="c1"># użyj odpowiedniej biblioteki
+</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>        <span class="c1"># stwórz pustą kolejkę
+</span>
+<span class="n">Q</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"Ala"</span><span class="p">)</span>    <span class="c1"># dopisz coś do kolejki
+</span><span class="n">Q</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"ma"</span><span class="p">)</span>     <span class="c1"># j.w.
+</span><span class="n">Q</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"kota"</span><span class="p">)</span>   <span class="c1"># j.w.
+</span>
+<span class="n">Q</span><span class="p">.</span><span class="n">popleft</span><span class="p">()</span>        <span class="c1"># wyjmij pierwszy element z kolejki (zwróci "Ala")
+</span>
+<span class="k">if</span> <span class="n">Q</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"Q is not empty"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="implementacja-algorytmu-ala-dijkstra">Implementacja algorytmu a’la Dijkstra<a class="anchorjs-link " href="#implementacja-algorytmu-ala-dijkstra" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>Aby zrealizować algorytm podobny do algorytmu Dijkstry, 
+będziemy potrzebować kolejki priorytetowej.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">queue</span> <span class="kn">import</span> <span class="n">PriorityQueue</span>
+
+<span class="n">Q</span> <span class="o">=</span> <span class="n">PriorityQueue</span><span class="p">()</span>         <span class="c1"># stwórz pustą kolejkę
+</span>
+<span class="n">Q</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>                   <span class="c1"># wstaw 10 do kolejki
+</span><span class="n">Q</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>                    <span class="c1"># wstaw 5  do kolejki
+</span><span class="n">Q</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>                   <span class="c1"># wstaw 20 do kolejki
+</span><span class="n">Q</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>                     <span class="c1"># wyjmij z kolejki (da 5)
+</span>
+<span class="n">Q</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span>                   <span class="c1"># sprawdza czy kolejka jest pusta
+</span></code></pre></div></div>
+
+<p>W naszym przypadku potrzebujemy kolejki wyjmującej 
+elementy od największych do najmniejszych (czyli inaczej
+niż w Pythonie).<br>
+Najłatwiej to osiągnąć wstawiając liczby ze znakiem 
+ujemnym. <br>
+Będziemy też potrzebować, żeby kolejka przechowywała 
+nie tylko priorytety, ale numery wierzchołków. <br>
+W tym celu możemy wkładać do niej krotki, gdzie na 
+pierwszej pozycji jest priorytet and drugiej numer
+wierzchołka.</p>
+
+<p>UWAGA: <code class="language-plaintext highlighter-rouge">queue.PriorityQueue</code> nie wspiera operacji aktualizowania wag już znajdujących
+się w niej elementów przez co będziemy musieli wkładać do niej wielokrotnie
+ten sam wierzchołek wiekrotnie z różnymi wagami.</p>
+
+
+
+      
+    </div>
+    <script src="lab_00_warm-up_files/anchor.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  
+
+</body></html>
