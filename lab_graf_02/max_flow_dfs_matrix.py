@@ -4,6 +4,8 @@ import sys
 
 INF = 1e12
 
+# function returns list of n lists, each with n int elements
+# G[x][y] - weight of edge x -> y
 def generate_graph(n, edges):
     G = [[0]*n for _ in range(n)]
 
@@ -11,7 +13,13 @@ def generate_graph(n, edges):
         G[u-1][v-1] = c
     
     return G
-
+# recursive function that takes 6 arguments
+# G - matrix represented graph
+# u - current vertex index
+# sink - sink vertex index
+# V - Visited list with size = len(G), indicates if vertexes were visited before
+# path_edges - list that contains all edges travelled by function so far
+# min_cap - minimal flow along all edges in path_edges
 def find_open_path(G, u, sink, V, path_edges = [], min_cap = INF):
     V[u] = True
     if u != sink:
@@ -23,6 +31,10 @@ def find_open_path(G, u, sink, V, path_edges = [], min_cap = INF):
     else:
         return True, path_edges, min_cap
 
+# function takes 3 arguments
+# G - list of Vertex() objects
+# s - index of source vertex
+# t - index of sink vertex
 def maxFlow(G, s, t):
     max_capacity = 0
     found = True
@@ -41,7 +53,7 @@ def maxFlow(G, s, t):
 
 if __name__ == '__main__':
     sys.setrecursionlimit(10000)
-    tests = generate_tests('./graphs/flow')
+    tests = generate_tests('./graphs/flow')        # set size of maximum depth of Python interpreter stack
     for test in tests:
         V, E = loadDirectedWeightedGraph('graphs/flow/' + test)
 
