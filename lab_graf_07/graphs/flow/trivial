@@ -1,0 +1,6 @@
+c solution = 3
+p edge 5 4
+e 1 2 5
+e 2 3 7
+e 3 4 3
+e 4 5 10
